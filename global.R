@@ -7,8 +7,8 @@ library(tidyverse)
 library(DT)
 library(ggplot2)
 
-source("api-interface.R")
-source("helper-functions.R")
-source("table-helpers.R")
+source("R/api-interface.R")
+source("R/helper-functions.R")
+source("R/table-helpers.R")
 
 POLL_INTERVAL <- 5000
