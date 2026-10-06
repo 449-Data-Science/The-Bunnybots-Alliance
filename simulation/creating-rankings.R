@@ -2,8 +2,8 @@ rm(list = ls())
 
 library(tidyverse)
 
-load("thebunnybotsalliance/simulation/data/matches.rda")
-load("thebunnybotsalliance/simulation/data/values.rda")
+load("simulation/data/matches.rda")
+load("simulation/data/values.rda")
 
 ranking_points <- values
 ranking_points[] <- 0
@@ -79,5 +79,5 @@ rankings <- rankings |>
         `Avg Match` = average_match, `Ranking Total` = rp
     )
 
-write.csv(rankings, "thebunnybotsalliance/data/rankings.csv", row.names = FALSE)
-save(rankings, file = "thebunnybotsalliance/simulation/data/rankings.rda")
+write.csv(rankings, "data/rankings.csv", row.names = FALSE)
+save(rankings, file = "simulation/data/rankings.rda")

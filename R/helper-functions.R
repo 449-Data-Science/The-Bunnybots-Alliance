@@ -59,6 +59,7 @@ process_rankings <- function(raw) {
             ties = matches_played - wins - losses - dq,
             string = paste0(wins, "-", losses, "-", ties)
             ) |>
+        arrange(desc(`Ranking Score`)) |>
         select(
             rank, team_key, `Ranking Score`, `Avg Match`, string, 
             dq, matches_played, `Ranking Total`
