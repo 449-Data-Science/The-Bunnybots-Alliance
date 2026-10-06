@@ -74,7 +74,7 @@ navbarPage(
         title = "Matches",
         card(
             fill = FALSE,
-            table_header("Match details", "detailed_q", "detailed_table"),
+            table_header("Match Details", "detailed_q", "detailed_table"),
             card_body(
                 fillable = FALSE,
                 DTOutput("detailed_table")
@@ -96,7 +96,7 @@ navbarPage(
         div(class = "col-12 col-lg-9",
             card(
                 fill = FALSE,
-                card_header("Team matches"),
+                card_header("Team Matches"),
                 card_body(
                     fillable = FALSE,
                     DTOutput("team_table")

@@ -88,8 +88,8 @@ match_table <- function(df, highlight = NULL, query = "") {
         thead(
             tr(
                 th(rowspan = 2, "Match"),
-                th(colspan = 3, class = "grp-red", "Red alliance"),
-                th(colspan = 3, class = "grp-blue", "Blue alliance"),
+                th(colspan = 3, class = "grp-red", "Red Alliance"),
+                th(colspan = 3, class = "grp-blue", "Blue Alliance"),
                 th(colspan = 2, "Score")
             ),
             tr(
