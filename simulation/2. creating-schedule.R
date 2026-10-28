@@ -2,8 +2,10 @@ rm(list = ls())
 library(tidyverse)
 library(data.table)
 
-load("thebunnybotsalliance/simulation/data/values.rda")
-raw <- fread("thebunnybotsalliance/simulation/data/matches-numerical.txt")
+load("simulation/data/values.rda")
+
+# MatchMaker -t 25 -r 8 -g
+raw <- fread("simulation/data/matches-numerical.txt")
 
 data <- raw |>
     select(!V1) |>
@@ -18,4 +20,4 @@ data <- data |>
 
 schedule <- data
 
-save(schedule, file = "thebunnybotsalliance/simulation/data/schedule.rda")
+save(schedule, file = "simulation/data/schedule.rda")

@@ -2,8 +2,8 @@ rm(list = ls())
 
 library(tidyverse)
 
-load("thebunnybotsalliance/simulation/data/values.rda")
-load("thebunnybotsalliance/simulation/data/schedule.rda")
+load("simulation/data/values.rda")
+load("simulation/data/schedule.rda")
 
 col_vars <- c(
     "taxi_R1", "taxi_R2", "taxi_R3",
@@ -191,5 +191,5 @@ matches <- result |>
         blue1 = B1, blue2 = B2, blue3 = B3
         )
 
-write.csv(matches, "thebunnybotsalliance/data/matches.csv", row.names = FALSE)
-save(result, file = "thebunnybotsalliance/simulation/data/matches.rda")
+write.csv(matches, "data/matches.csv", row.names = FALSE)
+save(result, file = "simulation/data/matches.rda")

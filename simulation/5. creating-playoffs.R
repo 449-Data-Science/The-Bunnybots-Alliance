@@ -1,7 +1,7 @@
 rm(list = ls())
 
-load("thebunnybotsalliance/simulation/data/values.rda")
-load("thebunnybotsalliance/simulation/data/rankings.rda")
+load("simulation/data/values.rda")
+load("simulation/data/rankings.rda")
 
 # ----- FUNCTIONS ----- 
 
@@ -344,7 +344,7 @@ while (red_wins < 2 && blue_wins < 2) {
 # ----- FINISHING UP -----
 
 playoffs <- matches
-save(playoffs, file = "thebunnybotsalliance/simulation/data/playoffs.rda")
-save(alliances, file = "thebunnybotsalliance/simulation/data/alliances.rda")
-write.csv(playoffs, "thebunnybotsalliance/data/playoffs.csv", row.names = FALSE)
-write.csv(alliances, "thebunnybotsalliance/data/alliances.csv", row.names = FALSE)
+save(playoffs, file = "simulation/data/playoffs.rda")
+save(alliances, file = "simulation/data/alliances.rda")
+write.csv(playoffs, "data/playoffs.csv", row.names = FALSE)
+write.csv(alliances, "data/alliances.csv", row.names = FALSE)

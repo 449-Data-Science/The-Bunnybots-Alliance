@@ -1,7 +1,7 @@
 rm(list = ls())
 library(truncnorm)
 
-set.seed(42) 
+set.seed(9449) 
 
 num_teams <- 25
 teams <- c(
