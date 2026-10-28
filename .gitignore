@@ -20,3 +20,4 @@ po/*~
 rsconnect/
 .positai
 .DS_Store
+**/.DS_Store
