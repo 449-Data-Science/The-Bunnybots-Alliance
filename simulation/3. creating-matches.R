@@ -28,8 +28,11 @@ nrow <- length(result$match)
 ncol <- length(col_vars)
 blank_tidy <- data.frame(matrix(NA, nrow, ncol))
 names(blank_tidy) <- col_vars
-result <- bind_cols(result, blank_tidy)
+result <- bind_cols(result, blank_tidy)   # Adding the scoring columns
+result$match_label <- paste0("Q", 1:nrow) # Artificially adding match_label
+result <- result |> select(match, match_label, everything())
 
+# Helper Function to create the ENDGAME haul (takes into account if it's parked)
 generate_haul <- function(value, parked) {
     if (!parked) return(list(0, 0))
     
@@ -54,6 +57,15 @@ generate_haul <- function(value, parked) {
     }
 }
 
+# Helper function to randomly generate shelf & haul locations
+create_locations <- function(carrot, cake, length) {
+    zeros <- length - carrot - cake
+    pool <- c(rep(1, carrot), rep(2, cake), rep(0, zeros))
+    result <- sample(pool)
+    return(paste(result, collapse = ","))
+}
+
+# Creating the like actual entire game :D
 result <- result |>
     rowwise() |>
     mutate(
@@ -127,6 +139,7 @@ result <- result |>
     ) |>
     select(!starts_with("t_"))
 
+# Creating RPs
 result <- result |>
     mutate(
         stocked_rp_red = ifelse(
@@ -184,12 +197,32 @@ result <- result |>
             (minor_red) * 4 + (major_red) * 8,
     )
 
+# Creating the specific locations (random) for our Carrots / Cakes 
+result <- result |>
+    mutate(
+        slots_L1_red = create_locations(carrot_L1_red, cake_L1_red, 5),
+        slots_L2_red = create_locations(carrot_L2_red, cake_L2_red, 5),
+        slots_L3_red = create_locations(carrot_L3_red, cake_L3_red, 5),
+        slots_L1_blue = create_locations(carrot_L1_blue, cake_L1_blue, 5),
+        slots_L2_blue = create_locations(carrot_L2_blue, cake_L2_blue, 5),
+        slots_L3_blue = create_locations(carrot_L3_blue, cake_L3_blue, 5),
+        
+        slots_haul_R1 = create_locations(carrot_haul_R1, cake_haul_R1, 3),
+        slots_haul_R2 = create_locations(carrot_haul_R2, cake_haul_R2, 3),
+        slots_haul_R3 = create_locations(carrot_haul_R3, cake_haul_R3, 3),
+        slots_haul_B1 = create_locations(carrot_haul_B1, cake_haul_B1, 3),
+        slots_haul_B2 = create_locations(carrot_haul_B2, cake_haul_B2, 3),
+        slots_haul_B3 = create_locations(carrot_haul_B3, cake_haul_B3, 3)
+    )
+
 matches <- result |>
     rename(
         match_number = match,
         red1 = R1, red2 = R2, red3 = R3,
         blue1 = B1, blue2 = B2, blue3 = B3
         )
+
+
 
 write.csv(matches, "data/matches.csv", row.names = FALSE)
 save(result, file = "simulation/data/matches.rda")

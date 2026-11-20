@@ -1,5 +1,7 @@
 rm(list = ls())
 
+set.seed(449) 
+
 source("simulation/1. creating-teams.R")
 source("simulation/2. creating-schedule.R")
 source("simulation/3. creating-matches.R")

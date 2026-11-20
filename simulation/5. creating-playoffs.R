@@ -5,6 +5,7 @@ load("simulation/data/rankings.rda")
 
 # ----- FUNCTIONS ----- 
 
+# Helper function to just generate our haul (taking into account parked T/F)
 generate_haul <- function(value, parked) {
     if (!parked) return(list(0, 0))
     
@@ -29,6 +30,15 @@ generate_haul <- function(value, parked) {
     }
 }
 
+# Helper function to randomly generate shelf & haul locations
+create_locations <- function(carrot, cake, length) {
+    zeros <- length - carrot - cake
+    pool <- c(rep(1, carrot), rep(2, cake), rep(0, zeros))
+    result <- sample(pool)
+    return(paste(result, collapse = ","))
+}
+
+# Simulate an entire match!
 simulate_match <- function(red, blue, values, match, match_label) {
     col_vars <- c(
         "taxi_R1", "taxi_R2", "taxi_R3",
@@ -216,6 +226,24 @@ simulate_match <- function(red, blue, values, match, match_label) {
                 (minor_red) * 4 + (major_red) * 8,
         )
     
+    # Creating the specific locations (random) for our Carrots / Cakes 
+    result <- result |>
+        mutate(
+            slots_L1_red = create_locations(carrot_L1_red, cake_L1_red, 5),
+            slots_L2_red = create_locations(carrot_L2_red, cake_L2_red, 5),
+            slots_L3_red = create_locations(carrot_L3_red, cake_L3_red, 5),
+            slots_L1_blue = create_locations(carrot_L1_blue, cake_L1_blue, 5),
+            slots_L2_blue = create_locations(carrot_L2_blue, cake_L2_blue, 5),
+            slots_L3_blue = create_locations(carrot_L3_blue, cake_L3_blue, 5),
+            
+            slots_haul_R1 = create_locations(carrot_haul_R1, cake_haul_R1, 3),
+            slots_haul_R2 = create_locations(carrot_haul_R2, cake_haul_R2, 3),
+            slots_haul_R3 = create_locations(carrot_haul_R3, cake_haul_R3, 3),
+            slots_haul_B1 = create_locations(carrot_haul_B1, cake_haul_B1, 3),
+            slots_haul_B2 = create_locations(carrot_haul_B2, cake_haul_B2, 3),
+            slots_haul_B3 = create_locations(carrot_haul_B3, cake_haul_B3, 3)
+        )
+    
     matches <- result |>
         rename(
             match_number = match,
@@ -251,7 +279,7 @@ match_schedule <- list(
     list("Loser of M11", "Winner of M12")    # M13 / SF
 )
 
-match_names <- c(paste0("Playoff Match ", 1:13), paste0("Finals" ), 1:3)
+match_names <- c(paste0("M", 1:13), paste0("F" ), 1:3)
 
 alliances_vector <- alliances |>
     rowwise() |>
@@ -317,7 +345,7 @@ while (red_wins < 2 && blue_wins < 2) {
     red <- unlist(alliances_vector["Winner of M11"])
     blue <- unlist(alliances_vector["Winner of M13"])
     
-    name <- paste0("Finals ", final_number)
+    name <- paste0("F", final_number)
     
     match <- simulate_match(red, blue, values, match_num, name)
     matches <- rbind(matches, match)

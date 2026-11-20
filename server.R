@@ -1,27 +1,27 @@
 function(input, output, session) {
-    matches_raw   <- reactive(arena()$matches)
-    playoffs_raw  <- reactive(arena()$playoffs)
-    rankings_raw  <- reactive(arena()$rankings)
-    alliances_raw <- reactive(arena()$alliances)
+    # matches_raw   <- reactive(arena()$matches)
+    # playoffs_raw  <- reactive(arena()$playoffs)
+    # rankings_raw  <- reactive(arena()$rankings)
+    # alliances_raw <- reactive(arena()$alliances)
+    # 
+    # matches_data  <- reactive(process_matches(matches_raw()))
+    # rankings_data <- reactive(process_rankings(rankings_raw()))
+    # playoffs_data <- reactive(process_playoffs(playoffs_raw()))
     
-    matches_data  <- reactive(process_matches(matches_raw()))
-    rankings_data <- reactive(process_rankings(rankings_raw()))
-    playoffs_data <- reactive(process_playoffs(playoffs_raw()))
-    
-    # matches_raw <- reactiveVal(read_csv("data/matches.csv"))
-    # rankings_raw <- reactiveVal(read_csv("data/rankings.csv"))
-    # playoffs_raw <- reactiveVal(read_csv("data/playoffs.csv"))
-    # alliances_raw <- reactiveVal(read_csv("data/alliances.csv"))
-    
-    # matches_data <- reactiveVal()
-    # rankings_data <- reactiveVal()
-    # playoffs_data <- reactiveVal()
-    
-    # observe({
-    #     matches_data(process_matches(matches_raw()))
-    #     rankings_data(process_rankings(rankings_raw()))
-    #     playoffs_data(process_playoffs(playoffs_raw()))
-    # })
+    matches_raw <- reactiveVal(read_csv("data/matches.csv"))
+    rankings_raw <- reactiveVal(read_csv("data/rankings.csv"))
+    playoffs_raw <- reactiveVal(read_csv("data/playoffs.csv"))
+    alliances_raw <- reactiveVal(read_csv("data/alliances.csv"))
+
+    matches_data <- reactiveVal()
+    rankings_data <- reactiveVal()
+    playoffs_data <- reactiveVal()
+
+    observe({
+        matches_data(process_matches(matches_raw()))
+        rankings_data(process_rankings(rankings_raw()))
+        playoffs_data(process_playoffs(playoffs_raw()))
+    })
     
     team_choices <- reactive({
         matches_data() |>
