@@ -29,7 +29,7 @@ generate_haul <- function(value, parked) {
     }
 }
 
-simulate_match <- function(red, blue, values, match, match_string) {
+simulate_match <- function(red, blue, values, match, match_label) {
     col_vars <- c(
         "taxi_R1", "taxi_R2", "taxi_R3",
         "carrot_oven_red", "carrot_L1_red", "carrot_L2_red", "carrot_L3_red",
@@ -52,7 +52,7 @@ simulate_match <- function(red, blue, values, match, match_string) {
     
     if (is.null(blue)) {
         result <- data.frame(
-            match_number = match, match_string, 
+            match_number = match, match_label, 
             red1 = red[1], red2 = red[2], red3 = red[3],
             blue1 = NA, blue2 = NA, blue3 = NA
         )
@@ -67,7 +67,7 @@ simulate_match <- function(red, blue, values, match, match_string) {
     
     if (is.null(red)) {
         result <- data.frame(
-            match_number = match, match_string, 
+            match_number = match, match_label, 
             red1 = NA, red2 = NA, red3 = NA,
             blue1 = blue[1], blue2 = blue[2], blue3 = blue[3]
         )
@@ -81,7 +81,7 @@ simulate_match <- function(red, blue, values, match, match_string) {
     }
     
     result <- data.frame(
-        match, match_string, 
+        match, match_label, 
         R1 = red[1], R2 = red[2], R3 = red[3],
         B1 = blue[1], B2 = blue[2], B3 = blue[3]
         )

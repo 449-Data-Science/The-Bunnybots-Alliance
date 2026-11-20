@@ -1,7 +1,7 @@
 rm(list = ls())
 library(truncnorm)
 
-set.seed(9449) 
+set.seed(1) 
 
 num_teams <- 25
 teams <- c(
@@ -11,5 +11,10 @@ teams <- c(
 
 values <- rtruncnorm(num_teams, a = 0, b = 100, mean = 50, sd = 25)
 names(values) <- teams
+
+values['449'] = 90
+values['3504'] = 90
+values['4821'] = 90
+values['686'] = 90
 
 save(values, file = "simulation/data/values.rda")

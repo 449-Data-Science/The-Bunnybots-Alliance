@@ -5,6 +5,8 @@ library(data.table)
 load("simulation/data/values.rda")
 
 # MatchMaker -t 25 -r 8 -g
+# You would need to download the Matchmaker algorithm off the internet and run 
+# it, external to anything in this program.
 raw <- fread("simulation/data/matches-numerical.txt")
 
 data <- raw |>
