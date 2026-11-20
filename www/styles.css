@@ -143,6 +143,92 @@ td.blue-cell .rp.on { background: var(--blue); }
 .brand-short { display: none; }
 
 /* =========================================================
+   MATCH DETAILS TAB
+========================================================= */
+/* Clickable Match cells in the results tables */
+table.match-table td.match-cell { cursor: pointer; }
+table.match-table td.match-cell:hover { color: var(--carrot); text-decoration: underline; }
+table.match-table tr.pending td.match-cell { cursor: default; }
+table.match-table tr.pending td.match-cell:hover { color: var(--muted); text-decoration: none; }
+
+/* Clickable team numbers (match tables, rankings, alliances) */
+td.team-cell { cursor: pointer; }
+td.team-cell:hover { color: var(--carrot); text-decoration: underline; }
+td.team-cell.me:hover { color: #fff; }
+
+.picker-note { font-size: 13px; margin: 0.5rem 0 0; }
+.team-picker .form-select { margin-bottom: 0.75rem; }
+
+.match-main .card { margin-bottom: 1rem; }
+
+/* Lineup strip: one card, red half | blue half, Robot 1 / 2 / 3 in each */
+.match-lineup {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    background: #fff; border: 1px solid var(--line); border-radius: 8px;
+    overflow: hidden; margin-bottom: 1rem;
+}
+.lineup-side { padding: 12px; border-top: 4px solid transparent; }
+.lineup-red { border-top-color: var(--red); background: var(--red-soft); }
+.lineup-blue { border-top-color: var(--blue); background: var(--blue-soft); }
+.lineup-chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.lineup-chip { display: flex; flex-direction: column; align-items: center; border-radius: 6px; padding: 5px 4px 6px; background: #fff; }
+.lineup-red .lineup-team { color: var(--red); }
+.lineup-blue .lineup-team { color: var(--blue); }
+.lineup-robot { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.lineup-team { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.lineup-team.team-cell:hover { color: var(--carrot); text-decoration: underline; cursor: pointer; }
+.match-heading {
+    display: flex; align-items: baseline; justify-content: space-between;
+    flex-wrap: wrap; gap: 4px 16px; margin-bottom: 1rem;
+}
+.match-heading h2 { margin: 0; font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 2rem; }
+.match-heading-score { font-family: "Barlow Condensed", sans-serif; font-size: 1.9rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.match-heading-score .red-score { color: var(--red); }
+.match-heading-score .blue-score { color: var(--blue); }
+.match-heading-score .dash { color: var(--muted); margin: 0 0.4rem; font-weight: 500; }
+.match-heading-score .win { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 4px; }
+
+/* Top-down score table (TBA style) */
+table.detail-table thead th.grp-red { background: var(--red); color: #fff; }
+table.detail-table thead th.grp-blue { background: var(--blue); color: #fff; }
+table.detail-table tbody td { text-align: center; border-top: 1px solid #fff; }
+table.detail-table td.red-cell { background-color: var(--red-soft); }
+table.detail-table td.blue-cell { background-color: var(--blue-soft); }
+table.detail-table td.sub { color: var(--muted); font-size: 12.5px !important; }
+table.detail-table td.label-cell { background: var(--mist); font-weight: 500; color: var(--ink); }
+table.detail-table tr.subtotal td.label-cell { font-weight: 600; }
+table.detail-table tr.subtotal td.red-cell, table.detail-table tr.subtotal td.blue-cell { font-weight: 700; }
+table.detail-table tr.total td { font-size: 17px !important; font-weight: 700; }
+table.detail-table tr.total td.red-cell { color: var(--red); }
+table.detail-table tr.total td.blue-cell { color: var(--blue); }
+
+/* Field graphic. Colours are set here so the art can change without touching R. */
+.match-graphic { width: 100%; height: auto; display: block; }
+.match-graphic .mg-red, .mg-legend .mg-red { fill: var(--red); }
+.match-graphic .mg-blue, .mg-legend .mg-blue { fill: var(--blue); }
+.match-graphic .mg-red-soft { fill: var(--red-soft); }
+.match-graphic .mg-blue-soft { fill: var(--blue-soft); }
+.match-graphic .mg-oven { stroke: var(--ink); stroke-width: 6; }
+.match-graphic .mg-tri { stroke: var(--line); stroke-width: 2; }
+.mg-carrot { fill: #f19d38; }
+.mg-stripe { fill: #8fd462; }
+.mg-empty { fill: #b5b5b5; }
+.mg-off { fill: #b5b5b5; }
+.match-graphic text { font-family: "Barlow", sans-serif; fill: var(--ink); }
+.match-graphic .mg-section { font-size: 18px; font-weight: 600; letter-spacing: 0.08em; fill: var(--muted); }
+.match-graphic .mg-caption { font-family: "Barlow Condensed", sans-serif; font-size: 30px; font-weight: 700; }
+.match-graphic .mg-caption-red { fill: var(--red); }
+.match-graphic .mg-caption-blue { fill: var(--blue); }
+.match-graphic .mg-count { font-size: 44px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.match-graphic .mg-team { font-size: 24px; font-weight: 700; fill: #fff; }
+.match-graphic .mg-team-off { fill: var(--ink); }
+.match-graphic .mg-robot-no { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; fill: rgba(255,255,255,0.8); }
+.match-graphic .mg-robot-no.mg-team-off { fill: var(--muted); }
+.match-graphic .mg-more { font-size: 15px; font-weight: 600; fill: #fff; }
+.mg-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 0.5rem; font-size: 13px; color: var(--muted); }
+.mg-legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+/* =========================================================
    TABLETS AND PHONES (all mobile rules live here, last in the file)
 ========================================================= */
 @media (max-width: 991px) {
@@ -175,6 +261,11 @@ td.blue-cell .rp.on { background: var(--blue); }
     table.tba-table .rp-stack .rp { width: 12px; height: 10px; font-size: 7.5px !important; line-height: 9px; }
     .rp-legend { font-size: 12.5px; }
     .rp-legend .rp { width: 16px; height: 16px; font-size: 10px !important; line-height: 14px; }
+
+    /* Match details */
+    .match-heading h2, .match-heading-score { font-size: 1.6rem; }
+    .lineup-team { font-size: 18px; }
+    table.detail-table tbody td { padding: 5px 4px; }
 }
 
 /* Phones (iPhone 11-17 are 375-440px wide): squeeze the 9-column match tables to fit */
@@ -193,4 +284,11 @@ td.blue-cell .rp.on { background: var(--blue); }
     table.tba-table td.match-cell { padding-left: 6px; }
     .score-cell { gap: 3px; }
     table.tba-table .rp-stack .rp { width: 10px; height: 9px; font-size: 6.5px !important; line-height: 8px; }
+
+    .lineup-side { padding: 6px; }
+    .lineup-chips { gap: 4px; }
+    .lineup-robot { font-size: 9px; letter-spacing: 0.02em; }
+    .lineup-team { font-size: 15px; }
+    table.detail-table tbody td { font-size: 12px !important; padding: 4px 2px; }
+    table.detail-table td.label-cell { font-size: 11.5px !important; }
 }

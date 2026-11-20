@@ -117,3 +117,36 @@ $(document).on("input", ".table-search input", function() {
         setTimeout(resizeFrame, 500);
     }
 });
+
+
+/* ---------------------------------------------------------
+   MATCH CLICK-THROUGH
+   Clicking the Match cell of a results table asks the server
+   to open that match on the Matches tab. The label is the cell
+   text: a number for qualifications, the match name for playoffs.
+--------------------------------------------------------- */
+
+$(document).on("click", "table.match-table td.match-cell", function() {
+    var label = $(this).text().trim();
+    if (!label || $(this).closest("tr").hasClass("pending")) { return; }
+    Shiny.setInputValue("goto_match", { label: label, nonce: Date.now() }, { priority: "event" });
+});
+
+/* updateNavbarPage() switches tabs without a click, so resize here too */
+$(document).on("shown.bs.tab", function() {
+    setTimeout(resizeFrame, 100);
+    setTimeout(resizeFrame, 600);
+});
+
+
+/* ---------------------------------------------------------
+   TEAM CLICK-THROUGH
+   Any element with class .team-cell (table cell or lineup chip) holds a team number.
+   Clicking it opens that team on the Teams tab.
+--------------------------------------------------------- */
+
+$(document).on("click", ".team-cell", function() {
+    var team = $(this).text().trim();
+    if (!/^[0-9]+$/.test(team)) { return; }   // empty cells show a dash
+    Shiny.setInputValue("goto_team", { team: team, nonce: Date.now() }, { priority: "event" });
+});

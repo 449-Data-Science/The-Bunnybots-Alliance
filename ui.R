@@ -1,4 +1,5 @@
 navbarPage(
+    id = "main_nav",
     title = tagList(
         span(class = "brand-full", "The Bunnybots Alliance: Harvest Havoc 2026"),
         span(class = "brand-short", "The Bunnybots Alliance")
@@ -72,14 +73,49 @@ navbarPage(
     ),
     tabPanel(
         title = "Matches",
-        card(
-            fill = FALSE,
-            table_header("Match Details", "detailed_q", "detailed_table"),
-            card_body(
-                fillable = FALSE,
-                DTOutput("detailed_table")
+        div(class = "container-fluid", div(class = "row",
+        # Sidebar: pick a played match
+        div(class = "col-12 col-lg-3",
+            div(
+                class = "team-picker",
+                selectInput(
+                    "match_type", label = "Match type",
+                    choices = c("Qualification" = "Q", "Playoff" = "P"),
+                    selectize = FALSE, width = "100%"
+                ),
+                virtualSelectInput(
+                    "match_pick", label = "Select a match",
+                    choices = NULL, multiple = FALSE, search = TRUE
+                ),
+                p(class = "download-note picker-note", "Only matches that have been played are listed.")
+            )
+        ),
+        div(class = "col-12 col-lg-9 match-main",
+            uiOutput("match_heading"),
+            uiOutput("match_lineup"),
+            div(class = "row g-3",
+                div(class = "col-12 col-xl-6",
+                    card(
+                        fill = FALSE,
+                        card_header("Score Breakdown"),
+                        card_body(fillable = FALSE, uiOutput("match_breakdown"))
+                    )
+                ),
+                div(class = "col-12 col-xl-6",
+                    card(
+                        fill = FALSE,
+                        card_header("Field View"),
+                        card_body(fillable = FALSE, uiOutput("match_graphic"))
+                    )
+                )
+            ),
+            card(
+                fill = FALSE,
+                table_header("All Match Data", "detailed_q", "detailed_table"),
+                card_body(fillable = FALSE, DTOutput("detailed_table"))
             )
         )
+        ))
     ),
     tabPanel(
         title = "Teams",
@@ -105,6 +141,9 @@ navbarPage(
         )))
     ),
     tabPanel(
+        title = "Insights"
+    ),
+    tabPanel(
         title = "Scouting",
         card(
             fill = FALSE,
@@ -116,13 +155,13 @@ navbarPage(
                     class = "download-grid",
                         downloadButton(
                         outputId = "download_qual_matches",
-                        label = "Qualification matches",
+                        label = "Qualification Matches",
                         icon = icon("download"),
                         class = "btn btn-primary btn-sm"
                     ),
                     downloadButton(
                         outputId = "download_playoffs",
-                        label = "Playoff matches",
+                        label = "Playoff Matches",
                         icon = icon("download"),
                         class = "btn btn-primary btn-sm"
                     ),
@@ -135,6 +174,12 @@ navbarPage(
                     downloadButton(
                         outputId = "download_alliances",
                         label = "Alliances",
+                        icon = icon("download"),
+                        class = "btn btn-primary btn-sm"
+                    ),
+                    downloadButton(
+                        outputId = "download_teams",
+                        label = "Teams",
                         icon = icon("download"),
                         class = "btn btn-primary btn-sm"
                     )

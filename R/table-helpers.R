@@ -70,7 +70,7 @@ score_cell <- function(score, stocked, baked, dinner) {
 }
 
 # Qualification, playoff and per-team match tables
-match_table <- function(df, highlight = NULL, query = "") {
+match_table <- function(df, highlight = NULL, query = "", empty = "No matches yet") {
     df <- df |>
         mutate(
             `Red Score` = score_cell(
@@ -106,11 +106,14 @@ match_table <- function(df, highlight = NULL, query = "") {
         escape = setdiff(names(df), c("Red Score", "Blue Score")),
         options = base_options(
             query = query,
+            language = list(emptyTable = empty),
             rowCallback = match_row_callback(highlight),
             columnDefs = list(
                 list(targets = 0, className = "match-cell"),
-                list(targets = c(1:3, 7), className = "dt-center red-cell"),
-                list(targets = c(4:6, 8), className = "dt-center blue-cell"),
+                list(targets = 1:3, className = "dt-center red-cell team-cell"),
+                list(targets = 4:6, className = "dt-center blue-cell team-cell"),
+                list(targets = 7, className = "dt-center red-cell"),
+                list(targets = 8, className = "dt-center blue-cell"),
                 list(targets = "_all", defaultContent = "\u2013")
             )
         )
@@ -124,6 +127,7 @@ rankings_table <- function(df, query = "") {
             query = query, ordering = TRUE,
             order = list(list(0, "asc")),
             columnDefs = list(
+                list(targets = 1, className = "dt-center team-cell"),  # Team column: clickable
                 list(targets = "_all", className = "dt-center"),
                 list(targets = "_all", defaultContent = "\u2013")
             )
@@ -134,14 +138,15 @@ rankings_table <- function(df, query = "") {
         formatStyle("Team", fontWeight = "700") |>
         formatStyle(
             "Ranking Score",
-            background = styleColorBar(c(0, max(df$`Ranking Score`, na.rm = TRUE)), "#f9d3b5"),
+            background = styleColorBar(c(0, max(c(1, df$`Ranking Score`), na.rm = TRUE)), "#f9d3b5"),
             backgroundSize = "100% 70%", backgroundRepeat = "no-repeat",
             backgroundPosition = "center"
         )
 }
 
 # Alliances and the wide per-match detail table
-simple_table <- function(df, query = "") {
+# `team_cols`: zero-based indexes of columns that hold team numbers (clickable)
+simple_table <- function(df, query = "", team_cols = NULL) {
     df <- df |>
         mutate(across(where(is.logical), ~ ifelse(.x, "\u2713", "\u2013")))
     
@@ -149,9 +154,12 @@ simple_table <- function(df, query = "") {
         df, rownames = FALSE, selection = "none", class = "tba-table zebra",
         options = base_options(
             query = query,
-            columnDefs = list(
-                list(targets = "_all", className = "dt-center"),
-                list(targets = "_all", defaultContent = "\u2013")
+            columnDefs = c(
+                if (length(team_cols)) list(list(targets = team_cols, className = "dt-center team-cell")),
+                list(
+                    list(targets = "_all", className = "dt-center"),
+                    list(targets = "_all", defaultContent = "\u2013")
+                )
             )
         )
     )
