@@ -157,26 +157,21 @@ get_rankings <- function() {
 }
 
 get_alliances <- function() {
-    raw <- fetch_text("/api/alliances") |> jsonlite::fromJSON(simplifyVector = FALSE)
-    
-}
-
-get_alliances <- function() {
     req <- request(paste0(cheesy_base_url, "/api/alliances"))
     resp <- req_perform(req)
     raw <- resp_body_json(resp, simplifyVector = FALSE)
-    
+
     out <- purrr::map_dfr(raw, function(m) {
         ids <- c(unlist(m$TeamIds), rep(NA, 3))[1:3]   # pad if fewer than 3 picks
         ids[!is.na(ids) & ids == 0] <- NA
         tibble(
             Alliance = paste0("Alliance ", m$Id),
-            Captain = ids[1], 
-            `First Pick` = ids[2], 
+            Captain = ids[1],
+            `First Pick` = ids[2],
             `Second Pick` = ids[3]
         )
     })
-    
+
     bind_rows(
         tibble(
             Alliance = character(), Captain = integer(),

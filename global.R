@@ -11,6 +11,9 @@ source("R/api-interface.R")
 source("R/helper-functions.R")
 source("R/table-helpers.R")
 source("R/match-details.R")
+source("R/api.R")
+source("R/api-docs.R")
+
 
 POLL_INTERVAL <- 5000
 
@@ -25,6 +28,15 @@ or_last_good <- function(key, fn, empty) {
         }
     )
 }
+
+# One snapshot of everything the arena knows. Used by the app (below) and by
+# the public API (R/api.R).
+fetch_arena <- function() list(
+    matches   = or_last_good("matches",  function() get_matches("qualification"), empty_matches()),
+    playoffs  = or_last_good("playoffs", function() get_matches("playoff"),       empty_matches()),
+    rankings  = or_last_good("rankings", get_rankings,  tibble()),
+    alliances = or_last_good("alliances", get_alliances, tibble())
+)
 
 arena <- reactivePoll(
     POLL_INTERVAL, session = NULL,

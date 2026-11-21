@@ -162,9 +162,11 @@ function(input, output, session) {
             h2(title),
             div(
                 class = "match-heading-score",
+                rp_stack_ui(row, "red"),     # left of the red score
                 span(class = paste("red-score", if (winner == "red") "win"), row$red_score),
                 span(class = "dash", "\u2013"),
-                span(class = paste("blue-score", if (winner == "blue") "win"), row$blue_score)
+                span(class = paste("blue-score", if (winner == "blue") "win"), row$blue_score),
+                rp_stack_ui(row, "blue")     # right of the blue score
             )
         )
     })
@@ -172,6 +174,12 @@ function(input, output, session) {
     output$match_lineup    <- renderUI(match_lineup(selected_match()))
     output$match_breakdown <- renderUI(match_detail_table(selected_match()))
     output$match_graphic   <- renderUI(match_graphic(selected_match()))
+    
+    # ---- API docs card (Scouting tab) ----
+    # Shows the real address of this app so every example URL can be copied as-is
+    output$api_docs <- renderUI({
+        api_docs_ui(api_base_url(reactiveValuesToList(session$clientData)))
+    })
     
     output$download_qual_matches <- downloadHandler(
         filename = function() { "quals.csv" },

@@ -153,7 +153,7 @@ navbarPage(
                 p(class = "download-note", "Download the current data as CSV files."),
                 div(
                     class = "download-grid",
-                        downloadButton(
+                    downloadButton(
                         outputId = "download_qual_matches",
                         label = "Qualification Matches",
                         icon = icon("download"),
@@ -184,6 +184,14 @@ navbarPage(
                         class = "btn btn-primary btn-sm"
                     )
                 )
+            )
+        ),
+        card(
+            fill = FALSE,
+            card_header("API"),
+            card_body(
+                fillable = FALSE,
+                uiOutput("api_docs")
             )
         )
     )

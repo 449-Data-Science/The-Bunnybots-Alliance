@@ -20,11 +20,9 @@ SCORING <- list(
 # Hauled items only score if that robot is also parked.
 
 # Which alliance is drawn on the left of the field graphic
-# (the match table is red | blue, the graphic mock-up is red | blue).
+# ("red" matches the tables and lineup, which are red | blue).
 GRAPHIC_LEFT <- "red"
-
 PANTRY_SLOTS <- 5L  # slots per shelf
-
 
 # ---- Match catalog ----------------------------------------------------------
 # One row per match across both lists. `key` is what the selector stores
@@ -387,4 +385,29 @@ match_lineup <- function(row) {
             div(class = "lineup-chips", chips))
     }
     div(class = "match-lineup", one("red"), one("blue"))
+}
+
+
+# ---- RP badges beside the heading score -------------------------------------
+# Small vertical S / B / D stack, filled when the bonus RP was earned. Returns
+# NULL when the flags aren't known, same as the results tables.
+rp_stack_ui <- function(row, side) {
+    flags <- c(
+        S = row[[paste0("stocked_rp_", side)]],
+        B = row[[paste0("baked_rp_", side)]],
+        D = row[[paste0("dinner_rp_", side)]]
+    )
+    if (anyNA(flags)) return(NULL)
+    names <- c(S = "Stocked", B = "Baked", D = "Dinner")
+    div(
+        class = paste("rp-stack", paste0("rp-", side)),
+        lapply(names(flags), function(letter) {
+            earned <- isTRUE(flags[[letter]])
+            span(
+                class = paste("rp", if (earned) "on" else "off"),
+                title = paste0(names[[letter]], " RP ", if (earned) "earned" else "not earned"),
+                letter
+            )
+        })
+    )
 }

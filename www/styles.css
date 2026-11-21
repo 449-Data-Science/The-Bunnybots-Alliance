@@ -183,6 +183,30 @@ td.team-cell.me:hover { color: #fff; }
 }
 .match-heading h2 { margin: 0; font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 2rem; }
 .match-heading-score { font-family: "Barlow Condensed", sans-serif; font-size: 1.9rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+/* The badge stacks are taken out of the layout (absolute) so they can't change the
+   score's height or baseline. The padding reserves their room at each end.
+   TO RESIZE THE S/B/D BADGES: change the three --rp-* values just below
+   (and the ones in the phone block near the end of the file). */
+.match-heading-score {
+    --rp-w: 13px;      /* badge width */
+    --rp-h: 11px;      /* badge height */
+    --rp-font: 8px;    /* letter size */
+    position: relative; padding: 0 calc(var(--rp-w) + 10px);
+}
+.match-heading-score .rp-stack { position: absolute; top: 50%; transform: translateY(-50%); }
+.match-heading-score .rp-red { left: 0; }
+.match-heading-score .rp-blue { right: 0; }
+/* RP badges: filled when earned, outlined when not */
+.match-heading-score .rp-stack { gap: 2px; }
+.match-heading-score .rp {
+    width: var(--rp-w); height: var(--rp-h); margin: 0; border-radius: 3px;
+    font-family: "Barlow", sans-serif; font-size: var(--rp-font) !important; line-height: calc(var(--rp-h) - 2px);
+    text-align: center; font-weight: 700; border: 1px solid transparent;
+}
+.match-heading-score .rp.off { color: var(--muted); background: transparent; border-color: #c5ced6; font-weight: 500; }
+.match-heading-score .rp.on { color: #fff; }
+.match-heading-score .rp-red .rp.on { background: var(--red); }
+.match-heading-score .rp-blue .rp.on { background: var(--blue); }
 .match-heading-score .red-score { color: var(--red); }
 .match-heading-score .blue-score { color: var(--blue); }
 .match-heading-score .dash { color: var(--muted); margin: 0 0.4rem; font-weight: 500; }
@@ -228,6 +252,26 @@ table.detail-table tr.total td.blue-cell { color: var(--blue); }
 .mg-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 0.5rem; font-size: 13px; color: var(--muted); }
 .mg-legend span { display: inline-flex; align-items: center; gap: 6px; }
 
+/* API docs card (Scouting tab) */
+.api-docs h4 {
+    font-family: "Barlow Condensed", sans-serif; font-weight: 700;
+    font-size: 1.25rem; margin: 1.5rem 0 0.5rem;
+}
+.api-docs > p:first-child + h4 { margin-top: 1rem; }
+.api-docs code { color: var(--ink); background: var(--mist); border-radius: 4px; padding: 1px 5px; font-size: 0.85em; overflow-wrap: anywhere; }
+/* URLs in the tables stay on one line; the table scrolls sideways on phones */
+table.api-table td code { white-space: nowrap; overflow-wrap: normal; }
+table.api-table td:last-child { min-width: 200px; }   /* keeps the description readable; the wrapper scrolls instead */
+.api-docs .api-table-wrap { overflow-x: auto; }
+table.api-table td, table.api-table th { text-align: left; }
+table.api-table thead th { text-align: left; }
+pre.api-code {
+    background: var(--mist); border: 1px solid var(--line); border-radius: 6px;
+    padding: 10px 12px; margin: 0 0 0.5rem; overflow-x: auto; white-space: pre;
+}
+pre.api-code code { background: transparent; padding: 0; font-size: 13px; word-break: normal; }
+.api-example-label { margin: 0.75rem 0 0.25rem; font-weight: 600; color: var(--muted); font-size: 13px; }
+
 /* =========================================================
    TABLETS AND PHONES (all mobile rules live here, last in the file)
 ========================================================= */
@@ -264,6 +308,7 @@ table.detail-table tr.total td.blue-cell { color: var(--blue); }
 
     /* Match details */
     .match-heading h2, .match-heading-score { font-size: 1.6rem; }
+    .match-heading-score { --rp-w: 12px; --rp-h: 10px; --rp-font: 7.5px; }
     .lineup-team { font-size: 18px; }
     table.detail-table tbody td { padding: 5px 4px; }
 }
