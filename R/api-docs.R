@@ -51,8 +51,11 @@ api_docs_ui <- function(base) {
             "Read-only JSON / CSV access to the same data the site shows. 
             No key needed! But please note that the actual base will be 
             different at Bunnybots—I would recommend having the base be 
-            alterable in your code. The current base is: BASE. Email 449datascience@gmail.com
-            with any questions!"
+            alterable in your code. The current base is: BASE."
+        )),
+        p_(paste0(
+            "The server may also take a couple seconds to spin up. 
+            Email 449datascience@gmail.com with any questions!"
         )),
 
         h_("Endpoints"),
