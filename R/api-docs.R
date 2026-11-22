@@ -54,8 +54,11 @@ api_docs_ui <- function(base) {
             alterable in your code. The current base is: BASE."
         )),
         p_(paste0(
-            "The server may also take a couple seconds to spin up. 
-            Email 449datascience@gmail.com with any questions!"
+            "The server may also take a couple seconds to spin up, but afterwards 
+            connection should be relatively speedy. This app will support live 
+            updates at Bunnybots, so wrapping your API-interface with a reactivePoll 
+            or some form of constant polling may be a good idea! Please 
+            email 449datascience@gmail.com with any questions."
         )),
 
         h_("Endpoints"),
