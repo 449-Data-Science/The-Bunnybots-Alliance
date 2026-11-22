@@ -2,7 +2,7 @@ library(httr2)
 library(jsonlite)
 library(dplyr)
 
-cheesy_base_url <- Sys.getenv("ARENA_URL", "http://localhost:8080")
+cheesy_base_url <- Sys.getenv("ARENA_URL", "http://10.0.100.5:8080")
 
 fetch_text <- function(path) {
     request(paste0(cheesy_base_url, path)) |>

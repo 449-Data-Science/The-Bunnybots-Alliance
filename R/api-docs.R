@@ -47,7 +47,13 @@ api_docs_ui <- function(base) {
 
     div(
         class = "api-docs",
-        p_("Read-only JSON / CSV access to the same data the site shows. No key needed!"),
+        p_(paste0(
+            "Read-only JSON / CSV access to the same data the site shows. 
+            No key needed! But please note that the actual base will be 
+            different at Bunnybots—I would recommend having the base be 
+            alterable in your code. The current base is: BASE. Email 449datascience@gmail.com
+            with any questions!"
+        )),
 
         h_("Endpoints"),
         table_of(

@@ -23,7 +23,6 @@ library(shiny)
 # =============================================================================
 
 API_TTL <- 5   # seconds a fetched snapshot is reused between requests
-
 api_cache <- new.env()
 
 # Latest arena data, refetched at most every API_TTL seconds so a burst of
@@ -112,7 +111,7 @@ team_matches <- function(quals, playoffs, team, q) {
 
 # Returns list(data = <data frame>, single = <TRUE for one-record answers>)
 # or list(error = list(status, message))
-api_resource <- function(parts, q) {
+api_resource <- function(parts, q, bunny_arena_update) {
     arena <- api_arena()
     err <- function(status, msg) list(error = list(status = status, message = msg))
 
@@ -184,7 +183,7 @@ api_response <- function(req) {
     format <- tolower(q$format %||% "json")
     if (!format %in% c("json", "csv")) return(api_error(400, "format must be json or csv."))
 
-    result <- tryCatch(api_resource(parts, q), error = function(e) {
+    result <- tryCatch(api_resource(parts, q, bunny_arena_update), error = function(e) {
         message("API error: ", conditionMessage(e))
         list(error = list(status = 500L, message = "Could not read arena data."))
     })

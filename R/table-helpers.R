@@ -144,8 +144,41 @@ rankings_table <- function(df, query = "") {
         )
 }
 
+# OPR table: Team, Matches, then one column per metric. `extra` names the
+# user-chosen column, which gets a tinted background so it stands out from the
+# fixed ones. Sorted by Score OPR (highest first) until the user clicks a header.
+opr_table <- function(df, extra = NULL, query = "") {
+    metric_cols <- setdiff(names(df), c("Team", "Matches"))
+    score_range <- c(min(0, df$Score, na.rm = TRUE), max(c(1, df$Score), na.rm = TRUE))
+    
+    table <- datatable(
+        df, rownames = FALSE, selection = "none", class = "tba-table zebra",
+        options = base_options(
+            query = query, ordering = TRUE,
+            order = list(list(2, "desc")),
+            language = list(emptyTable = "No matches yet"),
+            columnDefs = list(
+                list(targets = "_all", className = "dt-center"),
+                list(targets = "_all", defaultContent = "–")
+            )
+        )
+    ) |>
+        formatRound(metric_cols, 1) |>
+        formatStyle("Team", fontWeight = "700") |>
+        formatStyle(
+            "Score",
+            background = styleColorBar(score_range, "#f9d3b5"),
+            backgroundSize = "100% 70%", backgroundRepeat = "no-repeat",
+            backgroundPosition = "center"
+        )
+    
+    if (!is.null(extra) && extra %in% names(df)) {
+        table <- formatStyle(table, extra, backgroundColor = "#fdf1e7", fontWeight = "600")
+    }
+    table
+}
+
 # Alliances and the wide per-match detail table
-# `team_cols`: zero-based indexes of columns that hold team numbers (clickable)
 simple_table <- function(df, query = "", team_cols = NULL) {
     df <- df |>
         mutate(across(where(is.logical), ~ ifelse(.x, "\u2713", "\u2013")))

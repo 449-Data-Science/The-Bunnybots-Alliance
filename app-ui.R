@@ -141,7 +141,27 @@ navbarPage(
         )))
     ),
     tabPanel(
-        title = "Insights"
+        title = "Insights",
+        card(
+            fill = FALSE,
+            table_header("Offensive Power Rating (OPR)", "opr_q", "opr_table"),
+            card_body(
+                fillable = FALSE,
+                div(
+                    class = "opr-controls",
+                    selectInput(
+                        "opr_extra", label = "Additional metric",
+                        choices = opr_extra, selected = "carrots_l1", width = "260px"
+                    ),
+                    p(
+                        class = "opr-note",
+                        "OPR is each team's estimated contribution to an alliance's total,",
+                        "fitted by least squares over all played qualification matches."
+                    )
+                ),
+                DTOutput("opr_table")
+            )
+        )
     ),
     tabPanel(
         title = "Scouting",

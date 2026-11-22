@@ -150,3 +150,15 @@ $(document).on("click", ".team-cell", function() {
     if (!/^[0-9]+$/.test(team)) { return; }   // empty cells show a dash
     Shiny.setInputValue("goto_team", { team: team, nonce: Date.now() }, { priority: "event" });
 });
+
+/* ---------------------------------------------------------
+   BANNER CLICK
+   Clicking the title banner ("The Bunnybots Alliance: ...") goes back to the
+   Results tab, like the logo link on most sites.
+--------------------------------------------------------- */
+
+$(document).on("click", ".brand-full", function(e) {
+    e.preventDefault();   // the brand is a "#" link; don't jump the page
+    $('.navbar-nav a[data-value="Results"]').first().trigger("click");
+    window.scrollTo({ top: 0 });
+});

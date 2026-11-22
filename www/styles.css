@@ -2,7 +2,7 @@
     /* Results page layout: quals on the left, alliances over playoffs on the right */
     .results-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); ;
         gap: 1rem;
         width: 100%;
     }
@@ -116,6 +116,11 @@ table.match-table td.me {
 }
 .table-search input:focus { outline: none; border-color: var(--carrot); background: #fff; }
 .dataTables_wrapper .dataTables_scrollBody { border-bottom: 0 !important; }
+
+/* Insights: metric picker above the OPR table */
+.opr-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 4px 20px; margin-bottom: 0.75rem; }
+.opr-controls .form-group, .opr-controls .shiny-input-container { margin-bottom: 0 !important; }
+.opr-note { color: var(--muted); font-size: 13px; margin: 0; flex: 1 1 280px; }
 
 /* Ranking point badges (S = stocked, B = baked, D = dinner) */
 /* Score with the three badges stacked beside it, so rows keep their height */

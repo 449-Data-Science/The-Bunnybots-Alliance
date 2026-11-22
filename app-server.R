@@ -1,27 +1,35 @@
 function(input, output, session) {
-    # matches_raw   <- reactive(arena()$matches)
-    # playoffs_raw  <- reactive(arena()$playoffs)
-    # rankings_raw  <- reactive(arena()$rankings)
-    # alliances_raw <- reactive(arena()$alliances)
-    # 
-    # matches_data  <- reactive(process_matches(matches_raw()))
-    # rankings_data <- reactive(process_rankings(rankings_raw()))
-    # playoffs_data <- reactive(process_playoffs(playoffs_raw()))
+    if (bunny_arena_update) {
+        matches_raw   <- reactive(arena()$matches)
+        playoffs_raw  <- reactive(arena()$playoffs)
+        rankings_raw  <- reactive(arena()$rankings)
+        alliances_raw <- reactive(arena()$alliances)
     
-    matches_raw <- reactiveVal(read_csv("data/matches.csv"))
-    rankings_raw <- reactiveVal(read_csv("data/rankings.csv"))
-    playoffs_raw <- reactiveVal(read_csv("data/playoffs.csv"))
-    alliances_raw <- reactiveVal(read_csv("data/alliances.csv"))
-
-    matches_data <- reactiveVal()
-    rankings_data <- reactiveVal()
-    playoffs_data <- reactiveVal()
-
-    observe({
-        matches_data(process_matches(matches_raw()))
-        rankings_data(process_rankings(rankings_raw()))
-        playoffs_data(process_playoffs(playoffs_raw()))
-    })
+        matches_data  <- reactive(process_matches(matches_raw()))
+        rankings_data <- reactive(process_rankings(rankings_raw()))
+        playoffs_data <- reactive(process_playoffs(playoffs_raw()))
+    } else {
+        matches_raw <- reactiveVal(read_csv("data/matches.csv"))
+        rankings_raw <- reactiveVal(read_csv("data/rankings.csv"))
+        playoffs_raw <- reactiveVal(read_csv("data/playoffs.csv"))
+        alliances_raw <- reactiveVal(read_csv("data/alliances.csv"))
+        
+        matches_data <- reactiveVal()
+        rankings_data <- reactiveVal()
+        playoffs_data <- reactiveVal()
+        
+        observe({
+            matches_data(process_matches(matches_raw()))
+            rankings_data(process_rankings(rankings_raw()))
+            playoffs_data(process_playoffs(playoffs_raw()))
+        })   
+    }
+    
+    # OPR is fitted on qualification matches only, like TheBlueAlliance. One
+    # solve covers every metric, so changing the extra column never refits.
+    oprs_all <- reactive(
+        compute_oprs(alliance_stats(matches_raw()), c(opr_core, opr_extra_flat))
+    )
     
     team_choices <- reactive({
         matches_data() |>
@@ -71,6 +79,16 @@ function(input, output, session) {
     
     output$rankings_table <- renderDT({
         rankings_table(rankings_data(), query = query_of("rankings_q"))
+    })
+    
+    output$opr_table <- renderDT({
+        req(input$opr_extra)
+        extra <- names(opr_extra_flat)[match(input$opr_extra, opr_extra_flat)]
+        
+        dataframe <- oprs_all() |>
+            select(Team, Matches, all_of(names(opr_core)), all_of(extra))
+        
+        opr_table(dataframe, extra = extra, query = query_of("opr_q"))
     })
     
     output$detailed_table  <- renderDT({
