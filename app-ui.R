@@ -97,15 +97,15 @@ navbarPage(
                 div(class = "col-12 col-xl-6",
                     card(
                         fill = FALSE,
-                        card_header("Score Breakdown"),
-                        card_body(fillable = FALSE, uiOutput("match_breakdown"))
+                        card_header("Field View"),
+                        card_body(fillable = FALSE, uiOutput("match_graphic"))
                     )
                 ),
                 div(class = "col-12 col-xl-6",
                     card(
                         fill = FALSE,
-                        card_header("Field View"),
-                        card_body(fillable = FALSE, uiOutput("match_graphic"))
+                        card_header("Score Breakdown"),
+                        card_body(fillable = FALSE, uiOutput("match_breakdown"))
                     )
                 )
             ),
