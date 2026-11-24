@@ -1,7 +1,7 @@
 library(htmltools)
 
 # =============================================================================
-# The API documentation card on the Scouting tab (same content as API.md).
+# The API documentation card on the Scouting tab.
 # `base` is the app's own address, so every example URL can be copied as-is.
 #
 # Text is written as plain strings: `code` in backticks, **bold**, and BASE for
@@ -47,19 +47,26 @@ api_docs_ui <- function(base) {
 
     div(
         class = "api-docs",
-        p_(paste0(
+        p_(
             "Read-only JSON / CSV access to the same data the site shows. 
             No key needed! But please note that the actual base will be 
             different at Bunnybots—I would recommend having the base be 
             alterable in your code. The current base is: BASE."
-        )),
-        p_(paste0(
+        ),
+        p_(
             "The server may also take a couple seconds to spin up, but afterwards 
             connection should be relatively speedy. This app will support live 
             updates at Bunnybots, so wrapping your API-interface with a reactivePoll 
-            or some form of constant polling may be a good idea! Please 
-            email 449datascience@gmail.com with any questions."
-        )),
+            or some form of constant polling may be a good idea! Fill out ",
+            a(
+                "this Google Form", 
+                href = "https://forms.gle/LKjHdEcZ1dnhwMwF6", 
+                target = "_blank"
+            ),
+            " if you would like to be emailed about updates to The 
+            Bunnybots Alliance.",
+        ),
+        p_("Please email 449datascience@gmail.com with any questions."),
 
         h_("Endpoints"),
         table_of(
